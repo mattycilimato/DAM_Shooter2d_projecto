@@ -5,7 +5,7 @@ public class EnemyBase : MonoBehaviour
     public int totalHp = 1;
     
     protected int currentHp;
-    EnemySPawner spawner;
+    EnemySpawner spawner;
 
     public void Awake()
     {
@@ -32,7 +32,7 @@ public class EnemyBase : MonoBehaviour
 
     }
 
-    public void Initialaze(EnemySPawner _spawner)
+    public void Initialaze(EnemySpawner _spawner)
     {
         spawner = _spawner;
     }

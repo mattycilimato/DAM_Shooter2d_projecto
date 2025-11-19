@@ -1,41 +1,13 @@
-
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class EnemySPawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
-    public Camera mainCamera;
-    Vector2 xSpawnRange;
-    Vector2 ySpawnRange;
-
     [Header("Spawn Settings")]
     public EnemyBase enemyPrefab;
-    public float spawnIntervallSeconds = 2;
-    public int maxEnemies = 10;
 
-
-    List<EnemyBase> spawnedEnemis = new List<EnemyBase>();
-
-
-
-
-    float spawnTimer = 0;
-
-    void Start()
-    {
-
-
-
-
-
-        Vector3 leftBottonCameraWorldPosition = mainCamera.ViewportToWorldPoint(Vector2.zero);
-        Vector3 rightUpperCameraWorldPosition = mainCamera.ViewportToWorldPoint(Vector2.one);
-
-
-        xSpawnRange = new Vector2(leftBottonCameraWorldPosition.x, rightUpperCameraWorldPosition.x);
-        ySpawnRange = new Vector2(leftBottonCameraWorldPosition.y, rightUpperCameraWorldPosition.y);
-    }
-
+    protected List<EnemyBase> spawnedEnemis = new List<EnemyBase>();
 
     public void EnemyDie(EnemyBase enemy)
     {
@@ -44,38 +16,15 @@ public class EnemySPawner : MonoBehaviour
             spawnedEnemis.Remove(enemy);
         }
     }
-    
-    
-    void Update()
+
+    public void SpawnEnemy(Vector3 spawnPosition)
     {
-        if (spawnedEnemis.Count < maxEnemies) 
-        {
-            spawnTimer += Time.deltaTime;
-            if (spawnTimer >= spawnIntervallSeconds)
-            {
-                Vector3 spawnPosition = new Vector3(Random.Range(xSpawnRange.x, xSpawnRange.y), Random.Range(ySpawnRange.x, ySpawnRange.y), -1);
+        EnemyBase newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
 
-                EnemyBase newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+        newEnemy.Initialaze(this);
 
-                newEnemy.Initialaze(this);
-
-                spawnedEnemis.Add(newEnemy);
-
-                spawnTimer = 0;
-            }
-
-        }
-        
-        
-        
-        
-
-
-
-
-
-
-
-
+        spawnedEnemis.Add(newEnemy);
     }
+
+
 }
